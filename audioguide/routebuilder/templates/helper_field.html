@@ -1,0 +1,28 @@
+  <div class="form-group {{field.name}}_field">
+
+    {% if field.errors %}
+      <ol>
+        {% for error in field.errors %}
+            <li><strong>{{ error|escape }}</strong></li>
+        {% endfor %}
+      </ol>
+    {% endif %}
+
+    <label for="{{ field.id_for_label }}"
+           class="control-label col-xs-2">
+      {{ field.label_tag }}
+    </label>
+
+    <div class="col-xs-10">
+      <input id="{{ field.id_for_label }}"
+             class="form-control"
+             maxlength="{{ field.field.max_length }}"
+             name="{{ field.name }}"
+             type="text"
+             placeholder="Email"
+             value="{{ field.value }}"
+      />
+
+      {{field.widget}}
+    </div>
+  </div>

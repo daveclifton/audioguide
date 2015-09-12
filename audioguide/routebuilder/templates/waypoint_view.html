@@ -1,0 +1,13 @@
+
+<h4>Waypoint {{ waypoint.id }}: {{ waypoint.title }}</h4>
+
+<div class="col-xs-12 col-sm-12 col-lg-6">
+  <p>Lat/Lng: {{ waypoint.lat}} {{ waypoint.lng}}</p>
+  <p>Audio: {{ waypoints.audio_file }}</p>
+  <span class="text-muted">{{ waypoint.description }}</span>
+  <p><a href="{% url 'route_edit' route.id waypoint.id %}">Edit</a></p>
+</div>
+
+<div class="col-xs-12 col-sm-12 col-lg-6">
+  <img src="{{ waypoint.image }}" class="img-responsive" alt="Cover Image">
+</div>

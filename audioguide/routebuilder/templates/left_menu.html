@@ -1,0 +1,21 @@
+<div class="col-sm-3 col-md-2 sidebar">
+  <ul class="nav nav-sidebar">
+
+    {% if waypoints %}
+      <li class="{% if not waypoint %}active{% endif %}">
+        <a href="{% url 'route' route.id %}">OVERVIEW <br/>{{ route.title }}
+        <img src="{{ route.cover_image }}" class="img-responsive" alt="" width='40%'>
+        </a>
+      </li>
+
+      {% for w in waypoints %}
+        <li class="{% if w == waypoint %}active{% endif %}">
+          <a href="{% url 'route' route.id w.seq %}">{{ w.title }}
+          <img src="{{ w.image }}" class="img-responsive" alt="" width='40%'>
+          </a>
+        </li>
+      {% endfor %}
+    {% endif %}
+
+  </ul>
+</div>

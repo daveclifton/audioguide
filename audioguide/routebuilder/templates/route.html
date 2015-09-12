@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block "content" %}
+
+        <h1 class="page-header">{{ route.title }}</h1>
+
+        <div class="col-xs-12 col-sm-12 col-lg-6 red_panel">
+            {% include "route_view.html" %}
+         </div>
+
+        <div class="col-xs-12 col-sm-12 col-lg-6 red_panel">
+            <div id="map"></div>
+        </div>
+
+{% endblock %}

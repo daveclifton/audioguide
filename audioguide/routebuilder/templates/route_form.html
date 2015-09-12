@@ -1,0 +1,15 @@
+
+<h4>Edit Route {{ route.id }}: {{ route.title }}</h4>
+
+{% if error_message %}
+  <p><strong>{{ error_message }}</strong></p>
+{% endif %}
+
+<form method="POST" class="form-horizontal">
+  {% csrf_token %}
+  {% for field in form %}
+    {% include "helper_field.html" %}
+  {% endfor %}
+  <input type="hidden" name='id' value="{{id}}" />
+  <input type="submit" value="Save" class="in_place_save_button" />
+</form>

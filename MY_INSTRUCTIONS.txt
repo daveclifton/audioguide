@@ -1,0 +1,36 @@
+
+
+cd "C:\Users\Dave\Google Drive\Projects\Python\django\audioguide"
+set PATH=%PATH%;C:\Python27\;C:\Python27\Scripts;C:\Python27\Tools
+set PATH=%PATH%;C:\Program Files\PostgreSQL\9.4\bin
+set PATH=%PATH%;"C:\Users\Dave\Google Drive\Projects\Python\django\audioguide"
+set PATH=%PATH%;"C:\Users\Dave\Google Drive\Projects\Python\myaudioguide\routebuilder"
+set PYTHONPATH=C:\Python27;C:\Python27\Lib;C:\Python27\DLLs
+
+
+cd  "C:\Users\Dave\Google Drive\Projects\Python\django"
+venv\Scripts\Activate
+cd audioguide
+python manage.py runserver
+
+
+python manage.py runserver 0.0.0.0:8000
+python manage.py migrate
+
+
+
+heroku login
+heroku local    # http://localhost:8000
+
+git push heroku master
+heroku ps:scale web=1
+heroku open # https://myaudiotour.herokuapp.com
+heroku logs -n 100
+heroku logs --tail
+
+
+# Git permissions!
+git update-index --chmod=+x routebuilder\routebuilder.py
+
+
+pip install git+https://github.com/nwcell/psycopg2-windows.git@win32-py27#egg=psycopg2

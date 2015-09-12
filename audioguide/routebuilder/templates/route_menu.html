@@ -1,0 +1,25 @@
+
+
+<div class="menu highlight container">
+  {% for r in routes %}
+
+    <div class="route row">
+      <div class="col-md-2{% if r == route %} active{% endif %}">
+        <a href="{% url 'route' r.id %}">{{ r.title }} </a>
+      </div>
+    </div>
+
+    {% if r == route %}
+      {% for w in waypoints %}
+        <div class="col-md-2 waypoint">
+          <div class="{% if w == waypoint %}active{% endif %}">
+            <a href="{% url 'route' r.id w.seq %}">{{ w.title }} </a>
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endfor %}
+</div>
+
+
+

@@ -1,0 +1,49 @@
+
+
+.index {
+    text-align: center;
+}
+
+.index div {
+    vertical-align: middle;
+    text-align: center;
+    margin: 10px;
+    overflow:hidden;
+}
+
+.index img {
+    max-height: 200px;
+
+.index span {
+    font-size: 15pt;
+    font-weight: bold;
+}
+
+
+
+
+////////////////////////////////////////////////////////////
+.id_field {
+  display:none;
+}
+
+
+
+.red_panel {
+    border: 2px solid red;
+}
+
+
+        #map {
+          height: 400px;
+          border: 2px black solid;
+        }
+
+
+.inplace_view {
+    display: inline-block;
+}
+
+div.new_waypoint {
+    display: none;
+}

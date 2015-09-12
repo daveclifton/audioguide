@@ -1,5 +1,11 @@
 
-<h4>Edit Waypoint {{ id }}</h4>
+{% if waypoint.id %}
+  <h4>Edit Waypoint {{ id }}</h4>
+{% else %}
+  <h4>New Waypoint </h4>
+{% endif %}
+
+
 
 {% if error_message %}
   <p><strong>{{ error_message }}</strong></p>
@@ -13,3 +19,11 @@
   <input type="hidden" name='id' value="{{id}}" />
   <input type="submit" value="Submit" />
 </form>
+
+{% if waypoint.id %}
+  <form action="{% url "waypoint_delete" %}" method="POST" class="form-horizontal">
+    {% csrf_token %}
+    <input type="hidden" name='id' value="{{ waypoint.id }}" />
+    <input type="submit" value="Delete" />
+  </form>
+{% endif %}

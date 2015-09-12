@@ -2,7 +2,7 @@ from django import forms
 from .models import *
 
 class RouteForm(forms.ModelForm):
-    id           = forms.IntegerField(label='id')
+    #id           = forms.IntegerField(label='id')
     title        = forms.CharField(label='title',max_length=40)
     description  = forms.CharField(label='description',max_length=500)
     color        = forms.CharField(label='color',max_length=7)
@@ -17,8 +17,8 @@ class RouteForm(forms.ModelForm):
 
 
 class WaypointForm(forms.ModelForm):
-    route        = forms.ModelChoiceField(Route.objects)
-    seq          = forms.IntegerField(label='sequence')
+#    route        = forms.ModelChoiceField(Route.objects)
+#    seq          = forms.IntegerField(label='sequence')
     title        = forms.CharField(label='title',max_length=40)
     description  = forms.CharField(label='description',max_length=500)
     lat          = forms.FloatField(label='latitude')
@@ -28,5 +28,5 @@ class WaypointForm(forms.ModelForm):
 
     class Meta:
         model = Waypoint
-        fields = ['id', 'seq','title','description','lat','lng','image','audio_file']
+        fields = ['id', 'title','description','lat','lng','image','audio_file']
 

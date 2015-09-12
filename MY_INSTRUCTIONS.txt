@@ -22,11 +22,18 @@ python manage.py migrate
 heroku login
 heroku local    # http://localhost:8000
 
+
+heroku run python audioguide/manage.py migrate
+
+
 git push heroku master
 heroku ps:scale web=1
 heroku open # https://myaudiotour.herokuapp.com
 heroku logs -n 100
 heroku logs --tail
+
+
+https://audioguide.herokuapp.com/routebuilder/#
 
 
 # Git permissions!

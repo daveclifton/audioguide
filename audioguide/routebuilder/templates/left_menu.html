@@ -1,20 +1,31 @@
+{% load url from future %}
+
 <div class="col-sm-3 col-md-2 sidebar">
   <ul class="nav nav-sidebar">
 
-    {% if waypoints %}
+    {% if route.id %}
       <li class="{% if not waypoint %}active{% endif %}">
         <a href="{% url 'route' route.id %}">OVERVIEW <br/>{{ route.title }}
         <img src="{{ route.cover_image }}" class="img-responsive" alt="" width='40%'>
         </a>
       </li>
 
-      {% for w in waypoints %}
-        <li class="{% if w == waypoint %}active{% endif %}">
-          <a href="{% url 'route' route.id w.seq %}">{{ w.title }}
-          <img src="{{ w.image }}" class="img-responsive" alt="" width='40%'>
+      {% if waypoints %}
+        {% for w in waypoints %}
+          <li class="{% if w == waypoint %}active{% endif %}">
+            <a href="{% url 'waypoint' route.id w.seq %}">{{ w.seq }}: {{ w.title }}
+            <img src="{{ w.image }}" class="img-responsive" alt="" width='40%'>
+            </a>
+          </li>
+        {% endfor %}
+      {% endif %}
+
+        <li>
+          <a href="{% url "waypoint_edit" action="add" route_id=route.id %}">Add waypoint
+          <img src="https://cdn3.iconfinder.com/data/icons/glypho-travel/64/map-pin-marker-plus-256.png" class="img-responsive" alt="" width='40%'>
           </a>
         </li>
-      {% endfor %}
+
     {% endif %}
 
   </ul>

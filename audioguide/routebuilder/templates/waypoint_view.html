@@ -5,7 +5,7 @@
   <p>Lat/Lng: {{ waypoint.lat}} {{ waypoint.lng}}</p>
   <p>Audio: {{ waypoints.audio_file }}</p>
   <span class="text-muted">{{ waypoint.description }}</span>
-  <p><a href="{% url 'route_edit' route.id waypoint.id %}">Edit</a></p>
+  <p><a href="{% url 'waypoint_edit' route_id=route.id waypoint_seq=waypoint.seq action="edit" %}">Edit</a></p>
 </div>
 
 <div class="col-xs-12 col-sm-12 col-lg-6">

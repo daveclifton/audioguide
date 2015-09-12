@@ -4,7 +4,7 @@ from django.db import models
 class Route(models.Model):
     id           = models.AutoField(primary_key=True)
     title        = models.CharField('title',max_length=40)
-    description  = models.CharField('description',max_length=500)
+    description  = models.CharField('description',max_length=2000)
     color        = models.CharField('color',max_length=7)
     cover_image  = models.CharField('cover image',max_length=160)
     timestamp    = models.DateTimeField('last updated')
@@ -24,7 +24,7 @@ class Waypoint(models.Model):
     route        = models.ForeignKey(Route)
     seq          = models.IntegerField('sequence')
     title        = models.CharField('title',max_length=40)
-    description  = models.CharField('description',max_length=500)
+    description  = models.CharField('description',max_length=2000)
     lat          = models.FloatField('latitude')
     lng          = models.FloatField('longitude')
     image        = models.CharField('image',max_length=160)

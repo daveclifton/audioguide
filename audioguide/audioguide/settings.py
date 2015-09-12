@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'audioguide.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 DATABASES = {
-        'default': {
+        'default-dev': {
             # "postgresql://postgres:postgres@localhost:5432/audioguide"
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': 'audioguide',
@@ -86,7 +86,7 @@ DATABASES = {
             'PORT': '5432',
         },
 
-        'default-dev': {
+        'default': {
             # "postgresql://postgres:postgres@localhost:5432/audioguide"
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': 'dcmqgo2erop023',

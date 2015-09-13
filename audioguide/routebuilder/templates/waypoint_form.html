@@ -17,13 +17,13 @@
     {% include "helper_field.html" %}
   {% endfor %}
   <input type="hidden" name='id' value="{{id}}" />
-  <input type="submit" value="Submit" />
+  <p><input type="submit" class="btn btn-primary" value="Save" /></p>
 </form>
 
 {% if waypoint.id %}
   <form action="{% url "waypoint_delete" %}" method="POST" class="form-horizontal">
     {% csrf_token %}
     <input type="hidden" name='id' value="{{ waypoint.id }}" />
-    <input type="submit" value="Delete" />
+    <p><input type="submit" class="btn btn-primary" value="Delete" /></p>
   </form>
 {% endif %}

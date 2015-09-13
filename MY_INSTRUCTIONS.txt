@@ -49,3 +49,5 @@ pip install git+https://github.com/nwcell/psycopg2-windows.git@win32-py27#egg=ps
 heroku restart --app audioguide
 heroku stop --app audioguide all
 heroku run --app audioguide python audioguide/manage.py migrate
+
+heroku run --app audioguide python audioguide/manage.py runserver 0.0.0.0:$PORT

@@ -4,23 +4,25 @@
 
     {% if route.id %}
       <li class="{% if not waypoint %}active{% endif %}">
-        <a href="{% url 'route' route.id %}">OVERVIEW <br/>{{ route.title }}
-        <img src="{{ route.cover_image }}" class="img-responsive" alt="" width='40%'>
+        <a href="{% url 'route' route.id %}">OVERVIEW <br/>{{ route.title }}<br/>
+        <img src="{{ route.cover_image }}" alt="" width='50%'>
+        <img class="listen" src="/static/routebuilder/listen.png" onclick='responsiveVoice.speak("{{ route.description }}");'/>
         </a>
       </li>
 
       {% if waypoints %}
         {% for w in waypoints %}
           <li class="{% if w == waypoint %}active{% endif %}">
-            <a href="{% url 'waypoint' route.id w.seq %}">{{ w.seq }}: {{ w.title }}
-            <img src="{{ w.image }}" class="img-responsive" alt="" width='40%'>
+            <a href="{% url 'waypoint' route.id w.seq %}">{{ w.seq }}: {{ w.title }}<br/>
+            <img src="{{ w.image }}"  alt="" width='50%'>
+            <img class="listen" title='Click to listen' src="/static/routebuilder/listen.png" onclick='responsiveVoice.speak("{{ w.description }}");'/>
             </a>
           </li>
         {% endfor %}
       {% endif %}
 
         <li>
-          <a href="{% url "waypoint_edit" action="add" route_id=route.id %}">Add waypoint
+          <a href="{% url "waypoint_add" route_id=route.id %}">Add waypoint
           <img src="https://cdn3.iconfinder.com/data/icons/glypho-travel/64/map-pin-marker-plus-256.png" class="img-responsive" alt="" width='40%'>
           </a>
         </li>

@@ -1,59 +1,41 @@
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import get_object_or_404, render
 from django.core.urlresolvers import reverse
 from django.views import generic
+from django.views.decorators.http import require_http_methods
 
 from .models import *
 from .forms import *
 
 
-def index(request):
-    routes = Route.objects.all().extra(select={'lower_title': 'lower(title)'}).order_by('lower_title')
-
+def index(request, **kwargs):
+    route, routes, waypoint, waypoints = get_context( **kwargs)
     return render(request, 'index.html', {'routes':routes} )
 
 
 def route(request, **kwargs):
-
-    routes = Route.objects.all().extra(select={'lower_title': 'lower(title)'}).order_by('lower_title')
-
-    if 'route_id' in kwargs:
-        route = get_object_or_404(routes,id=kwargs['route_id'])
-    elif 'route_title' in kwargs:
-        route = get_object_or_404(routes,title=kwargs['route_title'])
-    else:
-        pass
-        # GET 404 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    route, routes, waypoint, waypoints = get_context( **kwargs)
 
     return render(request,
                   'route.html',
                   {'routes':       routes,
                    'route':        route,
-                   'waypoints':    route.waypoint_set.all(),
+                   'waypoints':    waypoints,
                    'waypoint':     None,
                   }
                 )
 
 
-def route_delete(request, **kwargs):
-
+@require_http_methods(["POST"])
+def route_delete(request):
     route = get_object_or_404(Route.objects.all(),id=request.POST['id'])
-
     route.delete()
     route.save
     return HttpResponseRedirect( reverse('index' ) )
 
 
 def route_edit(request, **kwargs):
-
-    routes = Route.objects.all().extra(select={'lower_title': 'lower(title)'}).order_by('lower_title')
-
-    if 'route_id' in kwargs:
-        route = get_object_or_404(routes,id=kwargs['route_id'])
-    elif 'route_title' in kwargs:
-        route = get_object_or_404(routes,title=kwargs['route_title'])
-    else:
-        route = Route()
+    route, routes, waypoint, waypoints = get_context( **kwargs)
 
     if request.method == 'POST':
         form = RouteForm(request.POST, instance=route)
@@ -65,30 +47,20 @@ def route_edit(request, **kwargs):
 
     return render(request,
                   'route_edit.html',
-                  {'form': form,
+                  {'form':      form,
                    'routes':    routes,
                    'route':     route,
-                   'waypoints': route.waypoint_set.all(),
-                   'waypoint':  None,
+                   'waypoints': waypoints,
+                   'waypoint':  waypoint,
                   }
                  )
 
 
 def waypoint_edit(request, **kwargs):
-    print "waypint edit", kwargs
-    routes = Route.objects.all().extra(select={'lower_title': 'lower(title)'}).order_by('lower_title')
+    route, routes, waypoint, waypoints = get_context( **kwargs)
 
-    if 'route_id' in kwargs:
-        print "search for route ", kwargs['route_id']
-        route = get_object_or_404(routes,id=kwargs['route_id'])
-
-    waypoint = Waypoint()
-    waypoints = route.waypoint_set.all()
-
-    if 'waypoint_id' in kwargs:
-        waypoint = get_object_or_404(waypoints,id=kwargs['waypoint_id'])
-    elif 'waypoint_seq' in kwargs:
-        waypoint = get_object_or_404(waypoints,seq=kwargs['waypoint_seq'])
+    if not route:
+        raise Http404
 
     if request.method == 'POST':
         form = WaypointForm(request.POST, instance=waypoint)
@@ -121,46 +93,51 @@ def waypoint_edit(request, **kwargs):
             )
 
 
+@require_http_methods(["POST"])
 def waypoint_delete(request, **kwargs):
     waypoint = get_object_or_404(Waypoint.objects.all(),id=request.POST['id'])
-
-    ###################################if request.method == 'POST':
     waypoint.delete()
     waypoint.save
     return HttpResponseRedirect( reverse('route', args=(waypoint.route_id,) ) )
 
 
 def waypoint(request, **kwargs):
+    route, routes, waypoint, waypoints = get_context( **kwargs)
 
-    routes = Route.objects.all().extra(select={'lower_title': 'lower(title)'}).order_by('lower_title')
-
-    if 'route_id' in kwargs:
-        route = get_object_or_404(routes,id=kwargs['route_id'])
-    elif 'route_title' in kwargs:
-        route = get_object_or_404(routes,title=kwargs['route_title'])
-    else:
-        pass
-        # GET 404 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-
-    waypoints = route.waypoint_set.all()
-
-    waypoint = None
-    if 'waypoint_seq' in kwargs:
-        waypoint = get_object_or_404(waypoints,seq=kwargs['waypoint_seq'])
-    elif 'waypoint_id' in kwargs:
-        waypoint = get_object_or_404(waypoints,id=kwargs['waypoint_id'])
-    else:
-        pass
-        # GET 404 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    if not route:
+        raise Http404
 
     return render(request,
                   'waypoint.html',
                   {'routes':       routes,
                    'route':        route,
-                   'waypoints':    route.waypoint_set.all(),
+                   'waypoints':    waypoints,
                    'waypoint':     waypoint,
                   }
                 )
 
 
+def get_context( route_id=None, route_title=None, waypoint_id=None, waypoint_seq=None):
 
+    routes = Route.objects.all().extra(select={'lower_title': 'lower(title)'}).order_by('lower_title')
+
+    if route_id:
+        route = routes.get(id=route_id)
+    elif route_title:
+        route = routes.get(title=route_title)
+    else:
+        route = None
+
+    if not route:
+        return (None,routes,None,None)
+
+    waypoints = route.waypoint_set.all()
+
+    if waypoint_seq:
+        waypoint = waypoints.get(seq=waypoint_seq)
+    elif waypoint_id:
+        waypoint = waypoints.get(id=waypoint_id)
+    else:
+        waypoint = None
+
+    return (route, routes, waypoint, waypoints)

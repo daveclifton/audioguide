@@ -21,6 +21,12 @@
 
 
 
+.left-menu img {
+    float: left;
+    display: inline-block;
+}
+
+
 
 ////////////////////////////////////////////////////////////
 .id_field {

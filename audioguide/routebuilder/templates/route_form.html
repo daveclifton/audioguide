@@ -17,13 +17,16 @@
     {% include "helper_field.html" %}
   {% endfor %}
   <input type="hidden" name='id' value="{{id}}" />
-  <input type="submit" value="Save" class="in_place_save_button" />
+  <p><input class="btn btn-primary" type="submit" value="Save" class="in_place_save_button" /></p>
 </form>
 
 {% if route.id %}
   <form action="{% url "route_delete" %}" method="POST" class="form-horizontal">
     {% csrf_token %}
     <input type="hidden" name='id' value="{{ route.id }}" />
-    <input type="submit" value="Delete" />
+    <p><input class="btn btn-primary" type="submit" value="Delete" /></p>
   </form>
 {% endif %}
+
+
+

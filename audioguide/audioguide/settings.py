@@ -87,7 +87,6 @@ DATABASES = {
         },
 
         'default': {
-            # "postgresql://postgres:postgres@localhost:5432/audioguide"
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
             'NAME': 'dcmqgo2erop023',
             'USER': 'mwtcxzxsydvwrv',

@@ -4,10 +4,14 @@
 <div class="col-xs-12 col-sm-12 col-lg-6">
   <p>Lat/Lng: {{ waypoint.lat}} {{ waypoint.lng}}</p>
   <p>Audio: {{ waypoints.audio_file }}</p>
-  <span class="text-muted">{{ waypoint.description }}</span>
-  <p><a href="{% url 'waypoint_edit' route_id=route.id waypoint_seq=waypoint.seq action="edit" %}">Edit</a></p>
+  <p class="text-muted">{{ waypoint.description }}</p>
+  <p><a class="btn btn-primary" onclick='responsiveVoice.speak("{{ waypoint.description }}");' role="button">Listen Now &raquo;</a><p>
+  <p><a class="btn btn-primary" href="{% url 'waypoint_edit' route_id=route.id waypoint_seq=waypoint.seq %}" role="button">Edit &raquo;</a></p>
 </div>
 
 <div class="col-xs-12 col-sm-12 col-lg-6">
   <img src="{{ waypoint.image }}" class="img-responsive" alt="Cover Image">
 </div>
+
+
+

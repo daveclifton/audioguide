@@ -1,8 +1,11 @@
+import json
+
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import get_object_or_404, render
 from django.core.urlresolvers import reverse
 from django.views import generic
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import *
 from .forms import *
@@ -56,6 +59,21 @@ def route_edit(request, **kwargs):
                  )
 
 
+
+@csrf_exempt
+@require_http_methods(["POST"])
+def route_sort(request, **kwargs):
+    route, routes, waypoint, waypoints = get_context( **kwargs)
+    ids = json.loads( request.POST.get('waypoint_ids') )
+    for i,id in enumerate(ids,1):
+        w = route.waypoint_set.get(id=id)
+        w.seq = i
+        res = w.save()
+
+    return HttpResponse("SUCCESS")
+
+
+
 def waypoint_edit(request, **kwargs):
     route, routes, waypoint, waypoints = get_context( **kwargs)
 
@@ -66,19 +84,12 @@ def waypoint_edit(request, **kwargs):
         form = WaypointForm(request.POST, instance=waypoint)
 
         if form.is_valid():
-            waypoint       = form.save(commit=False)
-
-            # New waypoint, calculate the seq
-            if not waypoint.id and route.waypoint_set.all():
-                next_seq = max( w.seq for w in route.waypoint_set.all() ) + 1
-            else:
-                next_seq = 1
-
-            waypoint.seq   = next_seq
-            waypoint.route = route
+            waypoint = form.save(commit=False)
+            if not waypoint.id:
+                waypoint.seq = route.waypoint_set.count() + 1
+                waypoint.route = route
             waypoint.save()
-
-            return HttpResponseRedirect( reverse('waypoint', args=(route.id,waypoint.seq) ) )
+            return HttpResponseRedirect( reverse('waypoint', args=(route.id,waypoint.id) ) )
 
     else:
         form = WaypointForm(instance=waypoint)
@@ -118,14 +129,12 @@ def waypoint(request, **kwargs):
                 )
 
 
-def get_context( route_id=None, route_title=None, waypoint_id=None, waypoint_seq=None):
+def get_context( route_id=None, waypoint_id=None):
 
     routes = Route.objects.all().extra(select={'lower_title': 'lower(title)'}).order_by('lower_title')
 
     if route_id:
         route = routes.get(id=route_id)
-    elif route_title:
-        route = routes.get(title=route_title)
     else:
         route = None
 
@@ -134,9 +143,7 @@ def get_context( route_id=None, route_title=None, waypoint_id=None, waypoint_seq
 
     waypoints = route.waypoint_set.all()
 
-    if waypoint_seq:
-        waypoint = waypoints.get(seq=waypoint_seq)
-    elif waypoint_id:
+    if waypoint_id:
         waypoint = waypoints.get(id=waypoint_id)
     else:
         waypoint = None

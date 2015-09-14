@@ -13,7 +13,7 @@
       <p>Audio: {{ waypoints.audio_file }}</p>
       <p class="text-muted">{{ waypoint.description }}</p>
       <p><a class="btn btn-primary" onclick='responsiveVoice.speak("{{ waypoint.description }}");' role="button">Listen Now &raquo;</a><p>
-      <p><a class="btn btn-primary" href="{% url 'waypoint_edit' route_id=route.id waypoint_seq=waypoint.seq %}" role="button">Edit &raquo;</a></p>
+      <p><a class="btn btn-primary" href="{% url 'waypoint_edit' route_id=route.id waypoint_id=waypoint.id %}" role="button">Edit &raquo;</a></p>
     </div>
 
     <div class="col-xs-12 col-sm-12 col-lg-6">

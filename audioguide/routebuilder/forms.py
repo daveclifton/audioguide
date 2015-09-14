@@ -29,8 +29,8 @@ class WaypointForm(forms.ModelForm):
         # Force a bootstrap class onto all fields.
         [ f.widget.attrs.update({ 'class': 'form-control' }) for f in self.fields.values() ]
 
-    #route        = forms.ModelChoiceField(Route.objects)
-    #seq          = forms.IntegerField(label='sequence')
+    #route_id    = forms.ModelChoiceField(widget=forms.HiddenInput())
+    #seq         = forms.IntegerField(label='sequence',widget=forms.HiddenInput())
     title        = forms.CharField(label='title',max_length=40)
     description  = forms.CharField(label='description', max_length=500, widget=forms.Textarea())
     lat          = forms.FloatField(label='latitude')

@@ -95,13 +95,39 @@ RouteModel = function(source) {
                 strokeWeight: 2
             });
 
+    var directionsService = new google.maps.DirectionsService;
+
 
     this.draw = function() {
-        polyline.setMap( MapModel.map );
-        polyline.setPath(
-            that.source_data.waypoints.map(
-                function(waypoint){ return new google.maps.LatLng( waypoint.lat, waypoint.lng ) })
-        );
+        //polyline.setMap( MapModel.map );
+        //polyline.setPath(
+        //    that.source_data.waypoints.map(
+        //        function(waypoint){ return new google.maps.LatLng( waypoint.lat, waypoint.lng ) })
+        //);
+
+        //##############################################################
+        // NEW ROUTING FUNCTIONALITY
+        origin = null
+        that.source_data.waypoints.forEach( function( destination ){
+            if ( origin ) {
+                directionsService.route(
+                    {
+                      origin:      origin,
+                      destination: destination,
+                      travelMode:  google.maps.TravelMode.WALKING
+                    },
+                    function(response, status) {
+                        new google.maps.DirectionsRenderer({
+                            map: MapModel.map,
+                            directions: response,
+                            polylineOptions: { strokeColor: that.source_data.color }
+                        });
+                    }
+                 );
+            }
+            origin = destination;
+        });
+
     };
 
 
@@ -134,16 +160,16 @@ RouteView = function(route) {
             .appendTo($(".routes"))
             .css("border-color",route.color());
 
-    this.div.find(".title")
-            .text(route.title())
-            .click( function(){ that.div.find(".body").toggle() } );
+    //this.div.find(".title")
+    //        .text(route.title())
+    //        .click( function(){ that.div.find(".body").toggle() } );
 
-    this.div.find(".description")
-            .text(route.description());
+    //this.div.find(".description")
+    //        .text(route.description());
 
     // Sort the route when the list is updated
-    this.div.find("ul").disableSelection()
-        .sortable({ update: function(event,ui) { that.route.sort( that.div.find("ul").sortable('toArray') ) } });
+    //this.div.find("ul").disableSelection()
+    //    .sortable({ update: function(event,ui) { that.route.sort( that.div.find("ul").sortable('toArray') ) } });
 
     this.div.find(".save" ).click( function() { that.save() } );
     this.div.find(".close").click( function() { that.close() } );
@@ -279,7 +305,8 @@ MapModel = {
             "title":     waypoint.title,
             "audio":     waypoint.audio,
             "source":    waypoint,
-            "draggable": true,
+            //////////////////// NOT DRAGGABLE
+            "draggable": false,
             "icon":      "https://maps.google.com/mapfiles/ms/icons/green-dot.png"
         });
 
@@ -287,6 +314,7 @@ MapModel = {
             AudioPlayer( waypoint );
         });
 
+        /////// N.B. NOT DRAGGABLE
         marker.addListener('dragend', function(event) {
             waypoint.lat = event.latLng.G;
             waypoint.lng = event.latLng.K;

@@ -6,13 +6,11 @@
 
   <div class="col-xs-12 col-sm-12 col-lg-6">
 
-
     {% if waypoint.id %}
       <h4>Edit Waypoint {{ id }}</h4>
     {% else %}
       <h4>New Waypoint </h4>
     {% endif %}
-
 
     {% if error_message %}
       <p><strong>{{ error_message }}</strong></p>
@@ -31,18 +29,15 @@
       <form action="{% url "waypoint_delete" %}" method="POST" class="form-horizontal">
         {% csrf_token %}
         <input type="hidden" name='id' value="{{ waypoint.id }}" />
-        <input type="hidden" name='seq' value="{{ waypoint.seq }}" />
         <p><input type="submit" class="btn btn-primary" value="Delete" /></p>
       </form>
     {% endif %}
 
-
-   </div>
+  </div>
 
   <div class="col-xs-12 col-sm-12 col-lg-6">
       <div id="map"></div>
   </div>
-
 
   <script>
     handle_map_click = function(lat,lng) {

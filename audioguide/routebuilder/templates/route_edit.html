@@ -5,8 +5,37 @@
   <h1 class="page-header">{{ route.title }}</h1>
 
   <div class="col-xs-12 col-sm-12 col-lg-6">
-      {% include "route_form.html" %}
-   </div>
+
+
+    {% if route.id %}
+      <h4>Edit Route {{ route.id }}: {{ route.title }}</h4>
+    {% else %}
+      <h4>New Route </h4>
+    {% endif %}
+
+
+    {% if error_message %}
+      <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
+
+    <form method="POST" class="form-horizontal">
+      {% csrf_token %}
+      {% for field in form %}
+        {% include "helper_field.html" %}
+      {% endfor %}
+      <input type="hidden" name='id' value="{{id}}" />
+      <p><input class="btn btn-primary" type="submit" value="Save" class="in_place_save_button" /></p>
+    </form>
+
+    {% if route.id %}
+      <form action="{% url "route_delete" %}" method="POST" class="form-horizontal">
+        {% csrf_token %}
+        <input type="hidden" name='id' value="{{ route.id }}" />
+        <p><input class="btn btn-primary" type="submit" value="Delete" /></p>
+      </form>
+    {% endif %}
+
+  </div>
 
   <div class="col-xs-12 col-sm-12 col-lg-6">
       <div id="map"></div>

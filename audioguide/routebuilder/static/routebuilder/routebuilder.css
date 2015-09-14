@@ -13,6 +13,7 @@
 
 .index img {
     max-height: 200px;
+}
 
 .index span {
     font-size: 15pt;
@@ -20,36 +21,16 @@
 }
 
 
-
 .left-menu img {
     float: left;
     display: inline-block;
 }
 
-
-
-////////////////////////////////////////////////////////////
-.id_field {
-  display:none;
+.error {
+    font-weight: bold;
+    color: #EE1111;
 }
 
-
-
-.red_panel {
-    border: 2px solid red;
-}
-
-
-        #map {
-          height: 400px;
-          border: 2px black solid;
-        }
-
-
-.inplace_view {
-    display: inline-block;
-}
-
-div.new_waypoint {
-    display: none;
+#map {
+    height: 400px;
 }

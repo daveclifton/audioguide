@@ -21,7 +21,7 @@ def route(request, **kwargs):
                   {'routes':       routes,
                    'route':        route,
                    'waypoints':    waypoints,
-                   'waypoint':     None,
+                   'waypoint':     None
                   }
                 )
 
@@ -66,19 +66,20 @@ def waypoint_edit(request, **kwargs):
         form = WaypointForm(request.POST, instance=waypoint)
 
         if form.is_valid():
+            waypoint       = form.save(commit=False)
 
-            if route.waypoint_set.all():
+            # New waypoint, calculate the seq
+            if not waypoint.id and route.waypoint_set.all():
                 next_seq = max( w.seq for w in route.waypoint_set.all() ) + 1
             else:
                 next_seq = 1
 
-            waypoint.seq = next_seq
-            route.waypoint_set.add(waypoint)
-            route.save
-            waypoint = form.save(commit=False)
+            waypoint.seq   = next_seq
             waypoint.route = route
-            waypoint.save
+            waypoint.save()
+
             return HttpResponseRedirect( reverse('waypoint', args=(route.id,waypoint.seq) ) )
+
     else:
         form = WaypointForm(instance=waypoint)
 

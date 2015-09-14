@@ -44,10 +44,17 @@ pip install git+https://github.com/nwcell/psycopg2-windows.git@win32-py27#egg=ps
 
 
 
-
-
 heroku restart --app audioguide
 heroku stop --app audioguide all
 heroku run --app audioguide python audioguide/manage.py migrate
 
 heroku run --app audioguide python audioguide/manage.py runserver 0.0.0.0:$PORT
+
+
+
+# Make initial test data 
+python manage.py dumpdata --format=json routebuilder > "C:\Users\Dave\Google Drive\Projects\Python\django\audioguide\routebuilder\fixtures\test.json"
+python manage.py makemigrations --empty routebuilder --name load_intial_data
+
+# Run tests
+python manage.py test routebuilder

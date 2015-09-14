@@ -224,19 +224,17 @@ $(".routes .create").click( function(){
 //
 MapModel = {
     init: function() {
+
         MapModel.map = new google.maps.Map(document.getElementById('map'), {styles: MapModel.styles});
 
         MapModel.map.addListener( 'click', function(event){
-            handle_map_click(event.latLng.G, event.latLng.K);
-
-            //RouteController.add_waypoint( {
-            //    waypoint_id: Math.floor((1 + Math.random()) * 0x100000000).toString(16),
-            //    lat:       event.latLng.G,
-            //    lng:       event.latLng.K,
-            //    title:     JSON.stringify( [event.latLng.G, event.latLng.K] ),
-            //    audio:     "no audio"
-            //});
-
+            RouteController.add_waypoint( {
+                waypoint_id: Math.floor((1 + Math.random()) * 0x100000000).toString(16),
+                lat:       event.latLng.G,
+                lng:       event.latLng.K,
+                title:     JSON.stringify( [event.latLng.G, event.latLng.K] ),
+                audio:     "no audio"
+            });
         });
     },
 
@@ -305,7 +303,40 @@ MapModel = {
 //
 function map_init() {
 
-    MapModel.init()
-    RouteController.add_route(route_json);
 
+    var route_1 = {
+    "title":       "Bath Walking Tour",
+    "description": "Example tour, copied from http://channels.visitbath.co.uk/janeausten/audio-tour",
+    "color":       "#0000FF",
+    "waypoints": [
+        {
+            "title": "Introduction and Abbey Court Yard",
+            "lat": 51.38136,
+            "lng": -2.359578000000056,
+            "audio_file": "http://channels.visitbath.co.uk/downloads/Chapter%2013%20The%20Assembly%20Rooms.mp3",
+            "waypoint_id": "159f2f9ff"
+        },
+        {
+            "title": "Sally Lunn's House",
+            "lat": 51.380754,
+            "lng": -2.3586689999999635,
+            "audio_file": "http://channels.visitbath.co.uk/downloads/Chapter%2003%20Sally%20Lunns%20House.mp3",
+            "waypoint_id": "1b051baea"
+        },
+        {
+            "title": "The Lower Rooms",
+            "lat": 51.380737,
+            "lng": -2.357934,
+            "audio_file": "http://channels.visitbath.co.uk/downloads/Chapter%2004%20The%20Lower%20Rooms.mp3",
+            "waypoint_id": "1eb474b41"
+        }
+        ]
+    };
+
+    var map = new google.maps.Map(document.getElementById('map'), {});
+
+    MapModel.init();
+    RouteController.add_route(route_1);
+
+    //$.getJSON( "https:bath_route_1.json", function(data) {RouteController.add_route(data)});
 }

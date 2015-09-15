@@ -1,16 +1,14 @@
 
-<script>
-  {% if route %}
-    route_json = {{ route.as_json|safe }};
-  {% endif %}
-  {% if waypoint %}
-    waypoint_json = {{ waypoint.as_json|safe }};
-  {% endif %}
-</script>
-
-
-<div class="col-xs-12 col-sm-12 col-lg-6">
   <div class="map-frame">
     <div id="map"></div>
   </div>
-</div>
+
+  <script>
+    {% if route %}
+      route_json = {{ route.as_json|safe }};
+    {% endif %}
+    {% if waypoint %}
+      waypoint_json = {{ waypoint.as_json|safe }};
+    {% endif %}
+  </script>
+
